@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>Login</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="loginHandler">
             <div>
                 <label for="email">Email:</label>
                 <input type="email" id="email" v-model="email" required />
@@ -31,7 +31,13 @@ export default {
             email: '',
             password: '',
             message: '',
+            showPassword: false,
         };
+    },
+    computed: {
+        passwordInputType() {
+            return this.showPassword ? 'text' : 'password';
+        },
     },
     methods: {
         async loginHandler() {
@@ -49,4 +55,3 @@ export default {
     },
 };
 </script>
-  

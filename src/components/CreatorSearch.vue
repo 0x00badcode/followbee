@@ -1,35 +1,30 @@
 <template>
-  <div class="search">
-    <input v-model="searchQuery" @input="searchCreators" placeholder="Search content creators..." />
-    <ul v-if="searchResults.length > 0" class="search-results">
-      <li v-for="creator in searchResults" :key="creator._id">
-        <router-link :to="`/profile/${creator._id}`">{{ creator.username }}</router-link>
-      </li>
-    </ul>
+  <div>
+    <h2>Search Content Creators</h2>
+    <input type="text" v-model="searchQuery" @input="search" />
+    <div v-for="creator in contentCreators" :key="creator._id">
+      <router-link :to="`/quests/${creator._id}`">{{ creator.username }}</router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { searchContentCreators } from '@/api/apiFunctions';
 
 export default {
   data() {
     return {
       searchQuery: '',
-      searchResults: [],
+      contentCreators: [],
     };
   },
   methods: {
-    async searchCreators() {
-      try {
-        if (this.searchQuery.trim() === '') {
-          this.searchResults = [];
-          return;
-        }
-        const response = await axios.get(`/api/search?query=${this.searchQuery}`);
-        this.searchResults = response.data;
-      } catch (error) {
-        console.error(error);
+    async search() {
+      const response = await searchContentCreators(this.searchQuery);
+      if (response.success) {
+        this.contentCreators = response.data;
+      } else {
+        console.error('Failed to fetch content creators:', response.error);
       }
     },
   },

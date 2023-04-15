@@ -3,22 +3,55 @@
     <header>
       <nav>
         <router-link to="/">Home</router-link>
-        <router-link to="/search">Search</router-link>
+
+        <div v-if="isLoggedIn && isCreator">
+          <router-link :to="`/quests/${loggedInUserId}`">My Quests</router-link>
+        </div>
+
+        <div v-if="!isLoggedIn">
+          <router-link to="/login">Login</router-link>
+          <router-link to="/register">Register</router-link>
+        </div>
+
+        <div v-if="isLoggedIn && !isCreator">
+          <router-link to="/search">Search Content Creators</router-link>
+        </div>
+
+        <button v-if="isLoggedIn" @click="logout">Logout</button>
       </nav>
     </header>
-    <main>
-      <router-view></router-view>
-    </main>
+    <router-view />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
-  name: 'App',
   computed: {
-    ...mapGetters(['isAuthenticated']),
+    ...mapState(['isLoggedIn']),
+  },
+  data() {
+    return {
+      loggedInUserId: '',
+      isCreator: false,
+    };
+  },
+  async created() {
+    if (this.isLoggedIn) {
+      // Fetch the necessary data, e.g., logged-in user's ID and role
+      // Replace the following with your logic to fetch the user's information
+      const loggedInUser = {}; // Fetch the user's information here
+      this.loggedInUserId = loggedInUser._id;
+      this.isCreator = loggedInUser.isCreator;
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('token');
+      this.$store.dispatch('setAuthStatus', false);
+      this.$router.push('/login');
+    },
   },
 };
 </script>

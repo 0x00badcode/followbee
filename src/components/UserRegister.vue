@@ -33,7 +33,7 @@
 </template>
   
 <script>
-import api from '@/api';
+import { register } from '@/api/apiFunctions';
 
 export default {
     data() {
@@ -43,47 +43,21 @@ export default {
             password: '',
             isCreator: false,
             message: '',
-            showPassword: false,
         };
     },
-    computed: {
-        passwordInputType() {
-            return this.showPassword ? 'text' : 'password';
-        },
-    },
     methods: {
-        async register() {
-            try {
-                await api.post('/api/auth/register', {
-                    username: this.username,
-                    email: this.email,
-                    password: this.password,
-                    isCreator: this.isCreator,
-                });
+        async registerHandler() {
+            const response = await register(this.username, this.email, this.password, this.isCreator);
 
-                this.$router.push('/login');
+            if (response.success) {
+                localStorage.setItem('token', response.data.token);
+                this.$store.dispatch('setAuthStatus', true);
+                this.$router.push('/');
                 this.message = 'Registration successful! You can now log in.';
-            } catch (error) {
-                console.error('Registration failed:', error);
-                console.log('Error object:', error);
-                console.log('Error response:', error.response);
-                console.log('Error response data:', error.response && error.response.data);
-                console.log('Error response status:', error.response && error.response.status);
-
-                if (
-                    error.response &&
-                    error.response.data &&
-                    error.response.data.error &&
-                    error.response.data.error === 'User already exists'
-                ) {
-                    this.message = 'Registration failed: ' + error.response.data.error;
-                } else {
-                    this.message = 'Registration failed: An unknown error occurred.';
-                }
-
+            } else {
+                this.message = response.error;
             }
         },
-
     },
 };
 </script>

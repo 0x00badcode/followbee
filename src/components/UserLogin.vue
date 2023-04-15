@@ -23,7 +23,7 @@
 </template>
   
 <script>
-import api from '@/api';
+import { login } from '@/api/apiFunctions';
 
 export default {
     data() {
@@ -31,41 +31,21 @@ export default {
             email: '',
             password: '',
             message: '',
-            showPassword: false,
         };
     },
-    computed: {
-        passwordInputType() {
-            return this.showPassword ? 'text' : 'password';
-        },
-    },
     methods: {
-        async login() {
-            try {
-                const response = await api.post('/api/auth/login', {
-                    email: this.email,
-                    password: this.password,
-                });
+        async loginHandler() {
+            const response = await login(this.email, this.password);
 
+            if (response.success) {
                 localStorage.setItem('token', response.data.token);
                 this.$store.dispatch('setAuthStatus', true);
                 this.$router.push('/');
                 this.message = 'Login successful!';
-            } catch (error) {
-                console.error('Login failed:', error);
-                console.log('Error object:', error);
-                console.log('Error response:', error.response);
-                console.log('Error response data:', error.response && error.response.data);
-                console.log('Error response status:', error.response && error.response.status);
-
-                if (error.response && error.response.data && error.response.data.message) {
-                    this.message = 'Login failed: ' + error.response.data.message;
-                } else {
-                    this.message = 'Login failed: An unknown error occurred.';
-                }
+            } else {
+                this.message = response.error;
             }
         },
-
     },
 };
 </script>

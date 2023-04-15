@@ -11,9 +11,15 @@
                 <input type="email" id="email" v-model="email" required />
             </div>
             <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" v-model="password" required />
-            </div>
+            <label for="password">Password:</label>
+            <input :type="passwordInputType" id="password" v-model="password" required />
+        </div>
+        <div>
+            <label for="showPassword">
+                <input type="checkbox" id="showPassword" v-model="showPassword" />
+                Show password
+            </label>
+        </div>
             <div>
                 <label for="isCreator">
                     <input type="checkbox" id="isCreator" v-model="isCreator" />
@@ -27,7 +33,7 @@
 </template>
   
 <script>
-import axios from 'axios';
+import api from '@/api';
 
 export default {
     data() {
@@ -37,21 +43,25 @@ export default {
             password: '',
             isCreator: false,
             message: '',
+            showPassword: false,
         };
     },
+    computed: {
+    passwordInputType() {
+      return this.showPassword ? 'text' : 'password';
+    },
+  },
     methods: {
         async register() {
             try {
-                const response = await axios.post('/api/auth/register', {
+                await api.post('/api/auth/register', {
                     username: this.username,
                     email: this.email,
                     password: this.password,
                     isCreator: this.isCreator,
                 });
 
-                localStorage.setItem('token', response.data.token);
-                this.$store.dispatch('setAuthStatus', true);
-                this.$router.push('/');
+                this.$router.push('/login');
                 this.message = 'Registration successful! You can now log in.';
             } catch (error) {
                 console.error('Registration failed:', error);
@@ -66,10 +76,8 @@ export default {
                     this.message = 'Registration failed: An unknown error occurred.';
                 }
             }
-
-
-
         },
+
     },
 };
 </script>

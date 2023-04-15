@@ -41,18 +41,26 @@ export default {
     if (this.isLoggedIn) {
       // Fetch the necessary data, e.g., logged-in user's ID and role
       // Replace the following with your logic to fetch the user's information
-      const loggedInUser = {}; // Fetch the user's information here
-      this.loggedInUserId = loggedInUser._id;
-      this.isCreator = loggedInUser.isCreator;
+      const loggedInUser = {
+        const response = await getUserInfo(); // Assuming you have a getUserInfo() function in apiFunctions.js
+
+        if(response.success) {
+          this.loggedInUserId = response.data._id;
+  this.isCreator = response.data.isCreator;
+}
+
+      }; // Fetch the user's information here
+this.loggedInUserId = loggedInUser._id;
+this.isCreator = loggedInUser.isCreator;
     }
   },
-  methods: {
-    logout() {
-      localStorage.removeItem('token');
-      this.$store.dispatch('setAuthStatus', false);
-      this.$router.push('/login');
-    },
+methods: {
+  logout() {
+    localStorage.removeItem('token');
+    this.$store.dispatch('setAuthStatus', false);
+    this.$router.push('/login');
   },
+},
 };
 </script>
 

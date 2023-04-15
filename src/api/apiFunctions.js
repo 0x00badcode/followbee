@@ -115,3 +115,14 @@ export async function getQuestById(questId) {
         return { success: false, error: error.response.data.message || 'An error occurred while fetching the quest details.' };
     }
 }
+
+export async function getUserInfo() {
+    try {
+      const response = await api.get('/api/user/me');
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+      return { success: false, error: error.response.data.error };
+    }
+  }
+  

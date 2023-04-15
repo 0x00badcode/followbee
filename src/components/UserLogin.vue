@@ -33,15 +33,8 @@ export default {
             message: '',
             showPassword: false,
         };
-
     },
     computed: {
-        passwordInputType() {
-            return this.showPassword ? 'text' : 'password';
-        },
-        showPassword() {
-            return false; // You can set this to true if you want to show the password by default
-        },
         passwordInputType() {
             return this.showPassword ? 'text' : 'password';
         },
@@ -62,5 +55,3 @@ export default {
     },
 };
 </script>
-
-

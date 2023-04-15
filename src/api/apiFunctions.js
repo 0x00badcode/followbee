@@ -98,31 +98,39 @@ export async function deleteQuest(questId) {
 
 export async function searchContentCreators(query) {
     try {
-        const response = await api.get('/api/content-creators', {
-            params: { query },
+        const response = await api.get(`/api/users/search?q=${query}`, {
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            },
         });
         return { success: true, data: response.data };
     } catch (error) {
-        return { success: false, error: error.response.data.message || 'An error occurred while searching for content creators.' };
+        console.error('Error searching content creators:', error.response.data);
+        return { success: false, error: error.response.data.error };
     }
 }
 
 export async function getQuestById(questId) {
     try {
-        const response = await api.get(`/api/quests/${questId}`);
+        const response = await api.get(`/api/quests/${questId}`, {
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            },
+        });
         return { success: true, data: response.data };
     } catch (error) {
-        return { success: false, error: error.response.data.message || 'An error occurred while fetching the quest details.' };
+        console.error('Error fetching quest:', error.response.data);
+        return { success: false, error: error.response.data.error };
     }
 }
 
 export async function getUserInfo() {
     try {
-      const response = await api.get('/api/user/me');
-      return { success: true, data: response.data };
+        const response = await api.get('/api/user/me');
+        return { success: true, data: response.data };
     } catch (error) {
-      console.error('Error fetching user information:', error);
-      return { success: false, error: error.response.data.error };
+        console.error('Error fetching user information:', error);
+        return { success: false, error: error.response.data.error };
     }
-  }
-  
+}
+

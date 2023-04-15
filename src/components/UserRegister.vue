@@ -11,15 +11,15 @@
                 <input type="email" id="email" v-model="email" required />
             </div>
             <div>
-            <label for="password">Password:</label>
-            <input :type="passwordInputType" id="password" v-model="password" required />
-        </div>
-        <div>
-            <label for="showPassword">
-                <input type="checkbox" id="showPassword" v-model="showPassword" />
-                Show password
-            </label>
-        </div>
+                <label for="password">Password:</label>
+                <input :type="passwordInputType" id="password" v-model="password" required />
+            </div>
+            <div>
+                <label for="showPassword">
+                    <input type="checkbox" id="showPassword" v-model="showPassword" />
+                    Show password
+                </label>
+            </div>
             <div>
                 <label for="isCreator">
                     <input type="checkbox" id="isCreator" v-model="isCreator" />
@@ -47,10 +47,10 @@ export default {
         };
     },
     computed: {
-    passwordInputType() {
-      return this.showPassword ? 'text' : 'password';
+        passwordInputType() {
+            return this.showPassword ? 'text' : 'password';
+        },
     },
-  },
     methods: {
         async register() {
             try {
@@ -70,11 +70,17 @@ export default {
                 console.log('Error response data:', error.response && error.response.data);
                 console.log('Error response status:', error.response && error.response.status);
 
-                if (error.response && error.response.data && error.response.data.message) {
-                    this.message = 'Registration failed: ' + error.response.data.message;
+                if (
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.error &&
+                    error.response.data.error === 'User already exists'
+                ) {
+                    this.message = 'Registration failed: ' + error.response.data.error;
                 } else {
                     this.message = 'Registration failed: An unknown error occurred.';
                 }
+
             }
         },
 

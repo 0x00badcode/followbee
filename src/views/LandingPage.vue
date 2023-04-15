@@ -1,4 +1,4 @@
-<!-- src/views/Landing.vue -->
+<!-- src/views/LandingPage.vue -->
 <template>
     <div class="landing">
         <h1>Welcome to FollowBee</h1>
@@ -12,7 +12,7 @@
   
 <script>
 export default {
-    name: "Landing",
+    name: "LandingPage",
 };
 </script>
   

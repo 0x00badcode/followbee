@@ -4,7 +4,6 @@
       <nav>
         <router-link to="/">Home</router-link>
         <router-link to="/search">Search</router-link>
-        <router-link v-if="!isAuthenticated" to="/register">Register/Login</router-link>
       </nav>
     </header>
     <main>

@@ -10,6 +10,7 @@
 
         <div v-if="!isLoggedIn">
           <router-link to="/login">Login</router-link>
+          &nbsp;|&nbsp;
           <router-link to="/register">Register</router-link>
         </div>
 

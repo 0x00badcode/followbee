@@ -131,11 +131,11 @@ export async function getUserInfo(userId, token) {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       return { success: true, data: response.data };
     } catch (error) {
       console.error(error);
       return { success: false, error: 'Failed to fetch user information' };
     }
   }
-  
+

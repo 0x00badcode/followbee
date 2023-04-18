@@ -25,7 +25,7 @@ import { mapState } from 'vuex';
 export default {
     name: "LandingPage",
     computed: {
-        ...mapState(['isLoggedIn'])
+        ...mapState(['loggedIn'])
     }
 };
 </script>

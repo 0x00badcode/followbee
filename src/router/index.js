@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import CreatorDashboard from '@/components/CreatorDashboard.vue';
 import CreatorSearch from '@/components/CreatorSearch.vue';
 import Register from '@/components/UserRegister.vue';
 import Login from '@/components/UserLogin.vue';
@@ -9,8 +8,9 @@ import QuestList from '@/components/QuestList.vue';
 import QuestForm from '@/components/QuestForm.vue';
 import QuestDetails from '@/components/QuestDetails.vue';
 import QuestPage from '@/components/QuestPage.vue';
-import Dashboard from '@/views/UserDashboard.vue';
-import store from '../store';
+import UserDashboard from '@/views/UserDashboard.vue';
+import CreatorDashboard from '@/views/CreatorDashboard.vue';
+import store from '@/store';
 
 const routes = [
   {
@@ -39,9 +39,20 @@ const routes = [
     component: Login,
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
+    path: '/user-dashboard',
+    name: 'UserDashboard',
+    component: UserDashboard,
+    meta : {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/creator-dashboard',
+    name: 'CreatorDashboard',
+    component: CreatorDashboard,
+    meta : {
+      requiresAuth: true
+    }
   },
   {
     path: '/quests/:questId',

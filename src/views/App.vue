@@ -2,8 +2,7 @@
   <div id="app">
     <header>
       <nav>
-        <router-link to="/">Home</router-link>
-
+          <router-link to="/">Home</router-link>
         <div v-if="isLoggedIn && isCreator">
           <router-link :to="`/quests/${loggedInUserId}`">My Quests</router-link>
         </div>

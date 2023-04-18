@@ -13,7 +13,7 @@
             @updated="updateQuest" />
     </div>
 </template>
-  
+
 <script>
 import { getQuestsForCreator, deleteQuest } from '@/api/apiFunctions';
 import QuestForm from './QuestForm.vue';
@@ -65,4 +65,3 @@ export default {
     },
 }
 </script>
-  

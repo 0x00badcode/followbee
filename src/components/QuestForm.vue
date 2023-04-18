@@ -17,10 +17,10 @@
       </form>
     </div>
   </template>
-  
+
   <script>
   import { createQuest, updateQuest } from '@/api/apiFunctions';
-  
+
   export default {
     props: {
       quest: {
@@ -45,10 +45,10 @@
     methods: {
       async submitForm() {
         const creatorId = this.$route.params.creatorId;
-  
+
         if (this.isUpdate) {
           const response = await updateQuest(this.quest._id, this.form.title, this.form.description, this.form.goal, this.quest.progress, creatorId);
-  
+
           if (response.success) {
             this.$emit('updated', response.data);
           } else {
@@ -56,7 +56,7 @@
           }
         } else {
           const response = await createQuest(this.form.title, this.form.description, this.form.goal, creatorId);
-  
+
           if (response.success) {
             this.$emit('created', response.data);
           } else {
@@ -68,4 +68,3 @@
     },
   };
   </script>
-  

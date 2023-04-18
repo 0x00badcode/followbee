@@ -9,6 +9,8 @@ import QuestList from '@/components/QuestList.vue';
 import QuestForm from '@/components/QuestForm.vue';
 import QuestDetails from '@/components/QuestDetails.vue';
 import QuestPage from '@/components/QuestPage.vue';
+import Dashboard from '@/views/UserDashboard.vue';
+import store from '../store';
 
 const routes = [
   {
@@ -36,7 +38,11 @@ const routes = [
     name: 'Login',
     component: Login,
   },
-  
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+  },
   {
     path: '/quests/:questId',
     name: 'Quest',
@@ -68,6 +74,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.getters.isLoggedIn;
+  if (isLoggedIn && to.path === '/') {
+    next('/dashboard');
+  } else {
+    next();
+  }
 });
 
 export default router;

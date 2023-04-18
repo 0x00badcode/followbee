@@ -1,18 +1,32 @@
-<!-- src/views/LandingPage.vue -->
 <template>
     <div class="landing">
-        <h1>Welcome to FollowBee</h1>
-        <p>A platform for connecting content creators with their audience.</p>
-        <div class="cta-buttons">
-            <router-link to="/register" class="cta-button">Register</router-link>
-            <router-link to="/login" class="cta-button">Log In</router-link>
+        <div v-if="isLoggedIn">
+            <h1>Welcome to FollowBee</h1>
+            <p>A platform for connecting content creators with their audience.</p>
+            <div class="cta-buttons">
+                <router-link to="/dashboard" class="cta-button">Dashboard</router-link>
+                <router-link to="/logout" class="cta-button">Log Out</router-link>
+            </div>
+        </div>
+        <div v-else>
+            <h1>Welcome to FollowBee</h1>
+            <p>A platform for connecting content creators with their audience.</p>
+            <div class="cta-buttons">
+                <router-link to="/register" class="cta-button">Register</router-link>
+                <router-link to="/login" class="cta-button">Log In</router-link>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     name: "LandingPage",
+    computed: {
+        ...mapState(['isLoggedIn'])
+    }
 };
 </script>
 

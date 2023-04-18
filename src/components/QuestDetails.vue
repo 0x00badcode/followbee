@@ -7,7 +7,7 @@
         <router-link :to="`/quests/${quest._id}/edit`">Edit quest</router-link>
     </div>
 </template>
-  
+
 <script>
 import { getQuestById } from '@/api/apiFunctions';
 
@@ -29,4 +29,3 @@ export default {
     },
 };
 </script>
-  

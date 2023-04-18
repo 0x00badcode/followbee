@@ -2,21 +2,22 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    isAuthenticated: false,
+    isLoggedIn: !!localStorage.getItem('token'),
   },
   mutations: {
-    setAuthStatus(state, isAuthenticated) {
-      state.isAuthenticated = isAuthenticated;
+    SET_AUTH_STATUS(state, status) {
+      state.isLoggedIn = status;
     },
   },
   actions: {
-    setAuthStatus({ commit }, isAuthenticated) {
-      commit('setAuthStatus', isAuthenticated);
+    setAuthStatus({ commit }, status) {
+      if (status) {
+        localStorage.setItem('token', 'loggedIn'); // You can use any value here, as we're not using it.
+      } else {
+        localStorage.removeItem('token');
+      }
+      commit('SET_AUTH_STATUS', status);
     },
   },
-  getters: {
-    isAuthenticated(state) {
-      return state.isAuthenticated;
-    },
-  },
+  modules: {},
 });

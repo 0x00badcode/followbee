@@ -10,7 +10,6 @@
 
         <div v-if="!isLoggedIn">
           <router-link to="/login">Login</router-link>
-          &nbsp;|&nbsp;
           <router-link to="/register">Register</router-link>
         </div>
 
@@ -18,12 +17,15 @@
           <router-link to="/search">Search Content Creators</router-link>
         </div>
 
-        <button v-if="isLoggedIn" @click="logout">Logout</button>
+        <div v-if="isLoggedIn">
+          <button @click="logout">Log Off</button>
+        </div>
       </nav>
     </header>
     <router-view />
   </div>
 </template>
+
 
 <script>
 import { mapState } from 'vuex';
@@ -38,14 +40,19 @@ export default {
       isCreator: false,
     };
   },
-  async created() {
-    if (this.isLoggedIn) {
-      // Fetch the necessary data, e.g., logged-in user's ID and role
-      // Replace the following with your logic to fetch the user's information
-      const loggedInUser = {}; // Fetch the user's information here
-      this.loggedInUserId = loggedInUser._id;
-      this.isCreator = loggedInUser.isCreator;
-    }
+  watch: {
+    isLoggedIn: {
+      async handler(newVal) {
+        if (newVal) {
+          // Fetch the necessary data, e.g., logged-in user's ID and role
+          // Replace the following with your logic to fetch the user's information
+          const loggedInUser = {}; // Fetch the user's information here
+          this.loggedInUserId = loggedInUser._id;
+          this.isCreator = loggedInUser.isCreator;
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
     logout() {

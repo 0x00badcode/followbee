@@ -21,7 +21,7 @@
         <div v-if="message" class="message">{{ message }}</div>
     </div>
 </template>
-  
+
 <script>
 import { login } from '@/api/apiFunctions';
 

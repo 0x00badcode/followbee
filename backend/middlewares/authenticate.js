@@ -1,4 +1,4 @@
-const authenticate = (req, res, next) => {
+module.exports = (req, res, next) => {
   const authHeader = req.header('Authorization');
 
   if (!authHeader) {

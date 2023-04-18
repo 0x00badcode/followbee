@@ -124,13 +124,18 @@ export async function getQuestById(questId) {
     }
 }
 
-export async function getUserInfo() {
+export async function getUserInfo(userId, token) {
     try {
-        const response = await api.get('/api/user/me');
-        return { success: true, data: response.data };
+      const response = await api.get(`/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      return { success: true, data: response.data };
     } catch (error) {
-        console.error('Error fetching user information:', error);
-        return { success: false, error: error.response.data.error };
+      console.error(error);
+      return { success: false, error: 'Failed to fetch user information' };
     }
-}
-
+  }
+  

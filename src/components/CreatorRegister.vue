@@ -35,7 +35,7 @@ export default {
             username: '',
             email: '',
             password: '',
-            isCreator: false,
+            isCreator: true,
             message: '',
         };
     },

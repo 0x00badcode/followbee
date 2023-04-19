@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CreatorSearch from '@/components/CreatorSearch.vue';
-import Register from '@/components/UserRegister.vue';
+import UserRegister from '@/components/UserRegister.vue';
+import CreatorRegister from '@/components/CreatorRegister.vue';
 import Login from '@/components/UserLogin.vue';
 import Landing from '@/views/LandingPage.vue';
 import Quest from '@/components/SingleQuest';
@@ -29,9 +30,14 @@ const routes = [
     component: CreatorSearch,
   },
   {
-    path: '/register',
+    path: '/UserRegister',
     name: 'Register',
-    component: Register,
+    component: UserRegister,
+  },
+  {
+    path: '/CreatorRegister',
+    name: 'Register',
+    component: CreatorRegister,
   },
   {
     path: '/login',

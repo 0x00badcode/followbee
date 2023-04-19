@@ -2,19 +2,9 @@
   <div id="app">
     <header>
       <nav>
-          <router-link to="/">Home</router-link>
-        <div v-if="isLoggedIn && isCreator">
-          <router-link :to="`/quests/${loggedInUserId}`">My Quests</router-link>
-        </div>
+        <router-link to="/search">Search Content Creators</router-link>
+        <router-link to="/login">Login</router-link>
 
-        <div v-if="!isLoggedIn">
-          <router-link to="/login">Login</router-link>
-          <router-link to="/register">Register</router-link>
-        </div>
-
-        <div v-if="isLoggedIn && !isCreator">
-          <router-link to="/search">Search Content Creators</router-link>
-        </div>
 
         <div v-if="isLoggedIn">
           <button @click="logout">Log Off</button>
@@ -68,6 +58,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  justify-content: space-between;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;

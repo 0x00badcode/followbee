@@ -1,20 +1,11 @@
 <template>
     <div class="landing">
-        <div v-if="isLoggedIn">
-            <h1>Welcome to FollowBee</h1>
-            <p>A platform for connecting content creators with their audience.</p>
-            <div class="cta-buttons">
-                <router-link to="/dashboard" class="cta-button">Dashboard</router-link>
-                <router-link to="/logout" class="cta-button">Log Out</router-link>
-            </div>
-        </div>
-        <div v-else>
-            <h1>Welcome to FollowBee</h1>
-            <p>A platform for connecting content creators with their audience.</p>
-            <div class="cta-buttons">
-                <router-link to="/register" class="cta-button">Register</router-link>
-                <router-link to="/login" class="cta-button">Log In</router-link>
-            </div>
+        <div class="name">
+        <h1>FollowBee</h1>
+    </div>
+        <div class="cta-buttons">
+            <router-link to="/register" class="cta-button">User</router-link>
+            <router-link to="/register" class="cta-button">Content Creator</router-link>
         </div>
     </div>
 </template>
@@ -49,5 +40,11 @@ export default {
     color: white;
     border-radius: 5px;
     font-size: 16px;
+}
+
+.name {
+    font-size: 75px;
+    font-weight: bold;
+    margin: 10px 0;
 }
 </style>

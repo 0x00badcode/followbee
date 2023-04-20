@@ -15,11 +15,11 @@
       </ul>
     </div>
   </template>
-  
+
   <script>
-  import axios from 'axios';
+  import axios from 'axios'; //!we need to import the api not axios
   import QuestForm from '@/components/QuestForm.vue';
-  
+
   export default {
     components: {
       QuestForm,

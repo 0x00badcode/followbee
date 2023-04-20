@@ -1,5 +1,16 @@
 const mongoose = require('mongoose');
 
+const CreatorInfoSchema = new mongoose.Schema({
+  profilePicture: {
+    type: String,
+    default: null,
+  },
+  description: {
+    type: String,
+    default: null,
+  },
+});
+
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -15,12 +26,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  following: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Creator',
-    },
-  ],
+  creatorInfo: CreatorInfoSchema,
 });
 
 module.exports = mongoose.model('User', UserSchema);

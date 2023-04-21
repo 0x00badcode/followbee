@@ -1,11 +1,10 @@
-<!-- src/views/CreatorDashboard.vue -->
 <template>
   <div class="dashboard">
     <h1>My Quests</h1>
     <div class="new-quest-form">
       <quest-form @created="onQuestCreated"></quest-form>
     </div>
-    <quest-grid :quests="quests" :layout="layout"></quest-grid>
+    <quest-grid :username="username" :isCreator="true"></quest-grid>
   </div>
 </template>
 

@@ -1,4 +1,3 @@
-<!-- UserProfile.vue -->
 <template>
     <div class="user-profile">
         <div class="user-info" @click="toggleDropdown">
@@ -18,35 +17,44 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import { getUserInfo } from '@/api/apiFunctions';
+
 export default {
-    props: {
-        username: {
-            type: String,
-            required: true,
-        },
-        email: {
-            type: String,
-            required: true,
-        },
-        profilePicture: {
-            type: String,
-            default: "https://via.placeholder.com/50",
-        },
+  props: {
+    profilePicture: {
+      type: String,
+      default: "https://via.placeholder.com/50",
     },
-    data() {
-        return {
-            showDropdown: false,
-        };
+  },
+  data() {
+    return {
+      showDropdown: false,
+      username: '',
+      email: '',
+    };
+  },
+  async mounted() {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    const response = await getUserInfo(userId, token);
+    if (response.success) {
+      this.username = response.data.username;
+      this.email = response.data.email;
+    }
+  },
+  methods: {
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
     },
-    methods: {
-        toggleDropdown() {
-            this.showDropdown = !this.showDropdown;
-        },
-        logout() {
-            // Add your logout logic here
-            this.showDropdown = false;
-        },
+    logout() {
+      localStorage.removeItem('token');
+      this.$store.dispatch('setAuthStatus', false);
+      this.$router.push('/');
+      this.showDropdown = false;
     },
+    ...mapActions(['getUserInfo']),
+  },
 };
 </script>
 
@@ -72,7 +80,7 @@ export default {
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    left: 0;
+    right: 0; /* Change from 'left: 0' to 'right: 0' */
     background-color: white;
     padding: 10px;
     border: 1px solid #ccc;

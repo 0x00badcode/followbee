@@ -127,19 +127,19 @@ export async function getQuestById(questId) {
 
 export async function getCreatorQuestsAndLayout(username) {
     try {
-      const response = await api.get(`/api/users/${username}/layout`);
-      return {
-        success: true,
-        data: response.data,
-      };
+        const response = await api.get(`/api/users/${username}/layout`);
+        return {
+            success: true,
+            data: response.data,
+        };
     } catch (error) {
-      console.error(error);
-      return {
-        success: false,
-        error: error.response?.data?.error || 'Error fetching quests and layout',
-      };
+        console.error(error);
+        return {
+            success: false,
+            error: error.response?.data?.error || 'Error fetching quests and layout',
+        };
     }
-  }
+}
 
 
 // -------------------------------------------- //
@@ -162,16 +162,16 @@ export async function searchContentCreators(query) {
 
 export async function getUserInfo(userId, token) {
     try {
-      const response = await api.get(`/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const response = await api.get(`/users/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-      return { success: true, data: response.data };
+        return { success: true, data: response.data };
     } catch (error) {
-      console.error(error);
-      return { success: false, error: 'Failed to fetch user information' };
+        console.error(error);
+        return { success: false, error: 'Failed to fetch user information' };
     }
-  }
+}
 

@@ -1,31 +1,52 @@
 <template>
     <div ref="gridContainer" class="grid-container">
-        <div v-for="(quest, index) in quests" :key="index" :style="{
-            width: quest.width + 'px',
-            height: quest.height + 'px',
-            top: quest.y + 'px',
-            left: quest.x + 'px',
-        }" class="quest-item">
+        <div v-for="(layoutItem, index) in layout" :key="index" :style="{
+                width: layoutItem.width + 'px',
+                height: layoutItem.height + 'px',
+                top: layoutItem.y + 'px',
+                left: layoutItem.x + 'px',
+            }" class="quest-item">
             <div class="quest-content">
                 <!-- Display quest content here -->
+                {{ getQuestById(layoutItem.questId).content }}
             </div>
+            <!-- Conditional rendering for the Delete button -->
+            <button v-if="isCreator" @click="deleteQuest(layoutItem.questId)" class="delete-button">
+                Delete
+            </button>
         </div>
     </div>
 </template>
 
+
 <script>
-import { Grid } from 'gridjs';
+import { getCreatorQuestsAndLayout } from "@/api/apiFunctions";
+import { Grid } from "gridjs";
 
 export default {
     props: {
-        quests: Array,
+        username: {
+            type: String,
+            required: true,
+        },
+        isCreator: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
+            quests: [],
+            layout: [],
             grid: null,
         };
     },
-    mounted() {
+    async mounted() {
+        const response = await getCreatorQuestsAndLayout(this.username);
+        if (response.success) {
+            this.quests = response.data.quests;
+            this.layout = response.data.layout;
+        }
         this.grid = new Grid(this.$refs.gridContainer, {
             draggable: true,
             resizable: true,
@@ -34,6 +55,14 @@ export default {
     },
     beforeUnmount() {
         this.grid.destroy();
+    },
+    methods: {
+        getQuestById(questId) {
+            return this.quests.find((quest) => quest._id === questId) || {};
+        },
+        // async deleteQuest(questId) {
+        //     // Call your deleteQuest API function here
+        // },
     },
 };
 </script>

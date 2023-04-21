@@ -22,39 +22,41 @@
     </div>
   </template>
 
-  <script>
-  import { login } from '@/api/apiFunctions';
+<script>
+import { login } from '@/api/apiFunctions';
 
-  export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-        message: '',
-        showPassword: false,
-      };
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      message: '',
+      showPassword: false,
+    };
+  },
+  computed: {
+    passwordInputType() {
+      return this.showPassword ? 'text' : 'password';
     },
-    computed: {
-      passwordInputType() {
-        return this.showPassword ? 'text' : 'password';
-      },
-    },
-    methods: {
-      async loginHandler() {
-        const response = await login(this.email, this.password);
+  },
+  methods: {
+    async loginHandler() {
+      const response = await login(this.email, this.password);
 
-        if (response.success) {
-          localStorage.setItem('token', response.data.token);
-          this.$store.dispatch('setAuthStatus', true);
-          this.$router.push('/me');
-          this.message = 'Login successful!';
-        } else {
-          this.message = response.error;
-        }
-      },
+      if (response.success) {
+        localStorage.setItem('token', response.data.token);
+        this.$store.dispatch('setAuthStatus', true);
+        this.$store.dispatch('setUserId', response.data.uid); // Store the user ID
+        this.$router.push('/me');
+        this.message = 'Login successful!';
+      } else {
+        this.message = response.error;
+      }
     },
-  };
-  </script>
+  },
+};
+</script>
+
 
   <style scoped>
   .login-container {

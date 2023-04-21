@@ -127,7 +127,7 @@ export async function getQuestById(questId) {
 
 export async function getCreatorQuestsAndLayout(username) {
     try {
-      const response = await axios.get(`/api/users/${username}/layout`);
+      const response = await api.get(`/api/users/${username}/layout`);
       return {
         success: true,
         data: response.data,

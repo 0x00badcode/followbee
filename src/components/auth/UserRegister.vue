@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>Register</h2>
-        <form @submit.prevent="register">
+        <form @submit.prevent="registerHandler">
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" v-model="username" required />

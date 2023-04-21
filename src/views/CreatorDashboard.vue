@@ -5,64 +5,45 @@
     <div class="new-quest-form">
       <quest-form @created="onQuestCreated"></quest-form>
     </div>
-    <ul class="quest-list">
-      <li v-for="quest in quests" :key="quest._id">
-        <h3>{{ quest.title }}</h3>
-        <p>{{ quest.description }}</p>
-        <p>Progress: {{ quest.progress }} / {{ quest.goal }}</p>
-        <button @click="deleteQuest(quest._id)">Delete</button>
-      </li>
-    </ul>
+    <quest-grid :quests="quests" :layout="layout"></quest-grid>
   </div>
 </template>
 
 <script>
-import axios from 'axios'; //!we need to import the api not axios
+import { getCreatorQuestsAndLayout } from '@/api/apiFunctions';
 import QuestForm from '@/components/QuestForm.vue';
+import QuestGrid from '@/components/QuestGrid.vue';
 
 export default {
   components: {
     QuestForm,
+    QuestGrid,
   },
   data() {
     return {
       quests: [],
+      layout: [],
     };
   },
   async created() {
-    try {
-      const response = await axios.get(`/api/${this.$route.params.creatorId}/quests`);
-      this.quests = response.data;
-    } catch (error) {
-      console.error(error);
+    const username = this.$route.params.username;
+    const response = await getCreatorQuestsAndLayout(username);
+
+    if (response.success) {
+      this.quests = response.data.quests;
+      this.layout = response.data.layout;
+    } else {
+      console.error('Failed to fetch quests and layout:', response.error);
     }
   },
   methods: {
     onQuestCreated(newQuest) {
       this.quests.push(newQuest);
     },
-    async deleteQuest(questId) {
-      try {
-        await axios.delete(`/api/quests/${questId}`);
-        this.quests = this.quests.filter((quest) => quest._id !== questId);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async created() {
-      const username = this.$route.params.username;
-      const response = await getCreatorQuestsAndLayout(username);
-
-      if (response.success) {
-        this.quests = response.data.quests;
-        this.layout = response.data.layout;
-      } else {
-        console.error('Failed to fetch quests and layout:', response.error);
-      }
-    },
-
+    // async deleteQuest(questId) {
+    //   // You'll need to update the delete quest API function to match your API.
+    //   // Then import it here and replace the axios.delete call.
+    // },
   },
 };
 </script>
-
-<style scoped></style>

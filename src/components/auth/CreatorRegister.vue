@@ -14,10 +14,10 @@
           <label for="password">Password:</label>
           <input :type="passwordInputType" id="password" v-model="password" required />
         </div>
-        <div>
+        <!-- <div>
           <label for="profilePicture">Profile Picture:</label>
           <input type="text" id="profilePicture" v-model="profilePicture" />
-        </div>
+        </div> -->
         <div>
           <label for="description">Description:</label>
           <textarea id="description" v-model="description"></textarea>

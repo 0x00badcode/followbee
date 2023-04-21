@@ -13,12 +13,10 @@
 
 <script>
 import CreatorSearch from '@/components/CreatorSearch.vue';
-import QuestDetails from '@/components/QuestDetails.vue';
 
 export default {
     components: {
         CreatorSearch,
-        QuestDetails,
     },
     data() {
         return {

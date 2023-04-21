@@ -46,7 +46,7 @@ export default {
             if (response.success) {
                 localStorage.setItem('token', response.data.token);
                 this.$store.dispatch('setAuthStatus', true);
-                this.$router.push('/');
+                this.$router.push('/me');
                 this.message = 'Login successful!';
             } else {
                 this.message = response.error;

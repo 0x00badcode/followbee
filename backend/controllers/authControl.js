@@ -3,8 +3,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.userRegister = async (req, res) => {
+    console.log('userRegister called');
     try {
-        const { username, email, password, } = req.body;
+        const { username, email, password, isCreator } = req.body;
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -14,7 +15,22 @@ exports.userRegister = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = new User({ username, email, password: hashedPassword, isCreator });
+        let newUser;
+        if (isCreator) {
+            newUser = new User({
+                username,
+                email,
+                password: hashedPassword,
+                creatorInfo: {
+                    profilePicture: null,
+                    description: null,
+                    gridLayout: []
+                }
+            });
+        } else {
+            newUser = new User({ username, email, password: hashedPassword });
+        }
+
         await newUser.save();
 
         res.status(201).json({ message: 'User created successfully' });
@@ -24,15 +40,12 @@ exports.userRegister = async (req, res) => {
 };
 
 exports.userLogin = async (req, res) => {
+    console.log('userLogin called');
     try {
         const { email, password } = req.body;
 
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: 'User not found' });
-        }
-        const creator = await Creator.findOne({ email });
-        if (!creator) {
             return res.status(400).json({ error: 'User not found' });
         }
 
@@ -45,8 +58,8 @@ exports.userLogin = async (req, res) => {
             expiresIn: '1h',
         });
 
-        res.status(200).json({ token: `Bearer ${token}` });
+        res.status(200).json({ token: `Bearer ${token}`, isCreator: !!user.creatorInfo });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error'});
     }
 };

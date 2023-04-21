@@ -2,7 +2,6 @@
     <div>
         <h1>User Dashboard</h1>
 
-        <h2>Search Content Creators</h2>
         <creator-search></creator-search>
 
         <h2>Quest Details</h2>

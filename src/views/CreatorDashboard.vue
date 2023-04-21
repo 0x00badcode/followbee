@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard">
-    <h1>My Quests</h1>
     <div class="new-quest-form">
       <quest-form @created="onQuestCreated"></quest-form>
     </div>

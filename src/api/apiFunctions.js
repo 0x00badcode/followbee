@@ -24,14 +24,19 @@ export async function login(email, password) {
     }
 }
 
-export async function register(username, email, password, isCreator) {
+export async function register(username, email, password, isCreator, creatorInfo = null) {
     try {
-        const response = await api.post('/api/auth/register', {
+        const requestData = {
             username,
             email,
             password,
-            isCreator,
-        });
+        };
+
+        if (isCreator) {
+            requestData.creatorInfo = creatorInfo;
+        }
+
+        const response = await api.post('/api/auth/register', requestData);
 
         return { success: true, data: response.data };
     } catch (error) {
@@ -43,6 +48,7 @@ export async function register(username, email, password, isCreator) {
         return { success: false, error: message };
     }
 }
+
 
 
 // -------------------------------------------- //

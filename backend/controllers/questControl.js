@@ -1,15 +1,10 @@
 const Quest = require('../models/Quest');
 const User = require('../models/User');
-
-const Quest = require('../models/Quest');
-const User = require('../models/User');
 const Follower = require('../models/Follower');
-
-const authenticate = require('../middlewares/authenticate');
 
 const { ObjectId } = require('mongoose').Types;
 
-exports.getQuestsForCreator = async (req, res) => {
+const getQuestsForCreator = async (req, res) => {
     try {
         const creatorId = req.params.creatorId;
         if (!ObjectId.isValid(creatorId)) {
@@ -23,7 +18,7 @@ exports.getQuestsForCreator = async (req, res) => {
     }
 };
 
-exports.createNewQuest = async (req, res) => {
+const createNewQuest = async (req, res) => {
     try {
         const { title, description, goal } = req.body;
         const creatorId = req.user.id;
@@ -42,7 +37,7 @@ exports.createNewQuest = async (req, res) => {
     }
 };
 
-exports.updateQuest = async (req, res) => {
+const updateQuest = async (req, res) => {
     try {
         const questId = req.params.questId;
         const creatorId = req.user.id;
@@ -68,7 +63,7 @@ exports.updateQuest = async (req, res) => {
     }
 };
 
-exports.deleteQuest = async (req, res) => {
+const deleteQuest = async (req, res) => {
     try {
         const questId = req.params.questId;
         const creatorId = req.user.id;
@@ -89,7 +84,7 @@ exports.deleteQuest = async (req, res) => {
     }
 };
 
-exports.followCreator = async (req, res) => {
+const followCreator = async (req, res) => {
     try {
         const creatorId = req.params.creatorId;
         const followerId = req.user.id;
@@ -106,7 +101,7 @@ exports.followCreator = async (req, res) => {
     }
 };
 
-exports.unfollowCreator = async (req, res) => {
+const unfollowCreator = async (req, res) => {
     try {
         const creatorId = req.params.creatorId;
         const followerId = req.user.id;
@@ -127,7 +122,7 @@ exports.unfollowCreator = async (req, res) => {
     }
 };
 
-exports.searchContentCreators = async (req, res) => {
+const searchContentCreators = async (req, res) => {
     try {
         const searchQuery = req.query.query;
         const regex = new RegExp(searchQuery, 'i');
@@ -138,7 +133,7 @@ exports.searchContentCreators = async (req, res) => {
     }
 };
 
-exports.getUserQuestsAndLayout = async (req, res) => {
+const getUserQuestsAndLayout = async (req, res) => {
     try {
         const { username } = req.params;
         const user = await User.findOne({ username });
@@ -168,4 +163,15 @@ exports.getUserQuestsAndLayout = async (req, res) => {
             error: 'Server Error',
         });
     }
+};
+
+module.exports = {
+    getQuestsForCreator,
+    createNewQuest,
+    updateQuest,
+    deleteQuest,
+    followCreator,
+    unfollowCreator,
+    searchContentCreators,
+    getUserQuestsAndLayout,
 };

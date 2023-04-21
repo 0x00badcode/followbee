@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middlewares/authenticate.js');
+const { authenticate } = require('../middlewares/authenticate.js');
 
-import { getMe } from '../controllers/userControl';
-import { userSearch } from '../controllers/userControl';
+const { getMe } = require('../controllers/userControl');
+const { userSearch } = require('../controllers/userControl');
 
-router.get('/me', authMiddleware, getMe);
+console.log(getMe);
+
+router.get('/me', authenticate, getMe);
 
 router.get('/search', userSearch);
 

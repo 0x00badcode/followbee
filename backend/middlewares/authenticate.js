@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+const authenticate = (req, res, next) => {
   const authHeader = req.header('Authorization');
 
   if (!authHeader) {
@@ -21,3 +21,5 @@ module.exports = (req, res, next) => {
     res.status(400).json({ error: 'Invalid token' });
   }
 };
+
+module.exports = { authenticate }

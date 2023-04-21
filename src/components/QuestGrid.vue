@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Grid from 'gridjs';
+import { Grid } from 'gridjs';
 
 export default {
     props: {

@@ -1,6 +1,6 @@
 const User = require('../models/User');
 
-const getMe = async (req, res) => {
+const getUserInfo = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select('-password');
         if (!user) {
@@ -24,6 +24,6 @@ const userSearch = async (req, res) => {
 };
 
 module.exports = {
-    getMe,
+    getUserInfo,
     userSearch,
 };

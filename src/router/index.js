@@ -22,7 +22,7 @@ const routes = [
     component: Login,
   },
   {
-    path: '/user-dashboard',
+    path: '/me',
     name: 'UserDashboard',
     component: UserDashboard,
     meta : {

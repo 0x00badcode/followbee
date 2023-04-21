@@ -21,8 +21,8 @@
   </template>
   <script>
   import { mapState } from 'vuex';
-  import UserRegister from '../components/UserRegister.vue';
-  import CreatorRegister from '../components/CreatorRegister.vue';
+  import UserRegister from '../components/auth/UserRegister.vue';
+  import CreatorRegister from '../components/auth/CreatorRegister.vue';
 
   export default {
     name: 'LandingPage',

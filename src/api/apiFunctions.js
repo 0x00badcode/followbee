@@ -1,5 +1,9 @@
 import api from './api';
 
+// -------------------------------------------- //
+// --------------------AUTH-------------------- //
+// -------------------------------------------- //
+
 export async function login(email, password) {
     try {
         const response = await api.post('/api/auth/login', {
@@ -39,6 +43,11 @@ export async function register(username, email, password, isCreator) {
         return { success: false, error: message };
     }
 }
+
+
+// -------------------------------------------- //
+// --------------------QUESTS------------------ //
+// -------------------------------------------- //
 
 export async function getQuestsForCreator(creatorId) {
     try {
@@ -96,20 +105,6 @@ export async function deleteQuest(questId) {
     }
 }
 
-export async function searchContentCreators(query) {
-    try {
-        const response = await api.get(`/api/users/search?q=${query}`, {
-            headers: {
-                Authorization: localStorage.getItem('token'),
-            },
-        });
-        return { success: true, data: response.data };
-    } catch (error) {
-        console.error('Error searching content creators:', error.response.data);
-        return { success: false, error: error.response.data.error };
-    }
-}
-
 export async function getQuestById(questId) {
     try {
         const response = await api.get(`/api/quests/${questId}`, {
@@ -120,6 +115,41 @@ export async function getQuestById(questId) {
         return { success: true, data: response.data };
     } catch (error) {
         console.error('Error fetching quest:', error.response.data);
+        return { success: false, error: error.response.data.error };
+    }
+}
+
+export async function getCreatorQuestsAndLayout(username) {
+    try {
+      const response = await axios.get(`/api/users/${username}/layout`);
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        success: false,
+        error: error.response?.data?.error || 'Error fetching quests and layout',
+      };
+    }
+  }
+
+
+// -------------------------------------------- //
+// --------------------USERS------------------- //
+// -------------------------------------------- //
+
+export async function searchContentCreators(query) {
+    try {
+        const response = await api.get(`/api/users/search?q=${query}`, {
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            },
+        });
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error('Error searching content creators:', error.response.data);
         return { success: false, error: error.response.data.error };
     }
 }

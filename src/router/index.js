@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import CreatorSearch from '@/components/CreatorSearch.vue';
-import UserRegister from '@/components/UserRegister.vue';
-import CreatorRegister from '@/components/CreatorRegister.vue';
-import Login from '@/components/UserLogin.vue';
+import UserRegister from '@/components/auth/UserRegister.vue';
+import CreatorRegister from '@/components/auth/CreatorRegister.vue';
+import Login from '@/components/auth/UserLogin.vue';
 import Landing from '@/views/LandingPage.vue';
 import Quest from '@/components/SingleQuest';
 import QuestList from '@/components/QuestList.vue';

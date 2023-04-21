@@ -9,9 +9,22 @@ const CreatorInfoSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  gridLayout: [
+  {
+    questId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Quest',
+    },
+    x: Number,
+    y: Number,
+    width: Number,
+    height: Number,
+  },
+],
+
 });
 
-const UserSchema = new mongoose.Schema({
+const User = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -29,4 +42,4 @@ const UserSchema = new mongoose.Schema({
   creatorInfo: CreatorInfoSchema,
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', User);

@@ -1,25 +1,39 @@
 const mongoose = require('mongoose');
 
-const QuestSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
+const QuestSchema = new mongoose.Schema(
+  {
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'UserSchema',
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+    },
+    image: {
+      type: String,
+    },
+    action: {
+      type: String,
+    },
+    creationDate: {
+      type: Date,
+      default: Date.now,
+    },
+    objective: {
+      type: Number,
+      required: true,
+    },
+    progress: {
+      type: Number,
+      default: 0,
+    },
   },
-  description: String,
-  goal: {
-    type: Number,
-    required: true,
-  },
-  progress: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-  creator: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-});
+  { timestamps: true }
+);
 
 module.exports = mongoose.model('Quest', QuestSchema);

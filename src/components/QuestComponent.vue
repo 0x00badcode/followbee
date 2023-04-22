@@ -29,10 +29,6 @@ export default {
 };
 </script>
 
-
-
-
-
 <style scoped>
 .quest {
     /* Add styles for the quest component here */

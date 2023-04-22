@@ -26,24 +26,20 @@
 </template>
 
 <script>
-import UserDashboard from "@/views/UserDashboard.vue";
-import CreatorDashboard from "@/views/CreatorDashboard.vue";
 import UserProfile from "@/components/UserProfile.vue";
 import CreatorSearch from "@/components/CreatorSearch.vue";
 import { mapState } from "vuex";
 
 export default {
     components: {
-        // UserDashboard,
-        // CreatorDashboard,
         CreatorSearch,
         UserProfile,
     },
     computed: {
         ...mapState(["loginType", "isLoggedIn"]),
-        dashboardComponent() {
-            return this.loginType === "user" ? UserDashboard : CreatorDashboard;
-        },
+        // dashboardComponent() {
+        //     return this.loginType === "user" ? UserDashboard : CreatorDashboard;
+        // },
     },
     methods: {
         switchProfile() {

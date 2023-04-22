@@ -73,19 +73,27 @@ export async function getQuest(questId) {
     }
 }
 
-export async function createQuest(title, description, goal, creatorId) {
+export async function createQuest(title, description, type, objective, endTime, creatorId) {
     try {
-        const response = await api.post('/api/quests', {
+        const requestData = {
+            creatorId,
             title,
             description,
-            goal,
-            creatorId,
-        });
+            type,
+            objective,
+        };
+
+        if (type === 'timer') {
+            requestData.endTime = endTime;
+        }
+
+        const response = await api.post('/api/quests', requestData);
         return { success: true, data: response.data };
     } catch (error) {
         return { success: false, error: error.response.data.error || 'Internal server error' };
     }
 }
+
 
 export async function updateQuest(questId, title, description, goal, progress, creatorId) {
     try {
@@ -141,6 +149,23 @@ export async function getCreatorQuestsAndLayout(username) {
     }
 }
 
+export async function saveCreatorQuestsAndLayout(username, layout) {
+    try {
+        const response = await api.put(`/api/users/${username}/layout`, { layout });
+        return {
+            success: true,
+            data: response.data,
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            error: error.response?.data?.error || 'Error saving quests and layout',
+        };
+    }
+}
+
+
 
 // -------------------------------------------- //
 // --------------------USERS------------------- //
@@ -174,4 +199,3 @@ export async function getUserInfo(userId, token) {
         return { success: false, error: 'Failed to fetch user information' };
     }
 }
-

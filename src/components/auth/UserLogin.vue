@@ -25,6 +25,7 @@
 <script>
 import { login } from '@/api/apiFunctions';
 import { mapActions } from 'vuex';
+import { getUserInfo } from '@/api/apiFunctions';
 
 export default {
   data() {
@@ -49,6 +50,7 @@ export default {
         this.$store.dispatch('setAuthStatus', true);
         this.$store.dispatch('setUserId', response.data.uid); // Store the user ID
         this.$store.dispatch('setLoginType', 'user'); // Set login type to 'user'
+        this.$store.dispatch('setUserProfile', getUserInfo(response.data.uid, response.data.token));
         this.$router.push('/me');
         this.message = 'Login successful!';
       } else {

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/components/auth/UserLogin.vue';
 import Landing from '@/views/LandingPage.vue';
-import CreatorDashboard from '@/views/CreatorDashboard.vue';
+// import CreatorDashboard from '@/views/CreatorDashboard.vue';
 import DynamicDashboard from '@/views/DynamicDashboard.vue';
 import store from '@/store';
 
@@ -11,23 +11,15 @@ const routes = [
     name: "Landing",
     component: Landing,
   },
-  {
-    path: '/dashboard/:creatorId',
-    name: 'CreatorDashboard',
-    component: CreatorDashboard,
-  },
+  // {
+  //   path: '/dashboard/:creatorId',
+  //   name: 'CreatorDashboard',
+  //   component: CreatorDashboard,
+  // },
   {
     path: '/login',
     name: 'Login',
     component: Login,
-  },
-  {
-    path: '/creator-dashboard',
-    name: 'CreatorDashboard',
-    component: CreatorDashboard,
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: '/me',

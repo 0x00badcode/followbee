@@ -10,18 +10,17 @@ const CreatorInfoSchema = new mongoose.Schema({
     default: null,
   },
   gridLayout: [
-  {
-    questId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Quest',
+    {
+      questId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quest',
+      },
+      x: Number,
+      y: Number,
+      width: Number,
+      height: Number,
     },
-    x: Number,
-    y: Number,
-    width: Number,
-    height: Number,
-  },
-],
-
+  ],
 });
 
 const User = new mongoose.Schema({
@@ -39,7 +38,7 @@ const User = new mongoose.Schema({
     type: String,
     required: true,
   },
-  following : [
+  following: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

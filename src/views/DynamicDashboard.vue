@@ -8,7 +8,6 @@
                 <div v-if="isLoggedIn">
                     <user-profile :username="username" :email="email" :profile-picture="profilePicture"
                         @switch-profile="switchProfile"></user-profile>
-
                 </div>
             </div>
         </div>
@@ -18,9 +17,9 @@
                 User
             </div>
             <div v-else>
-                creator
+                Creator
+                <quest-grid :username="username" :is-creator="loginType === 'creator'"></quest-grid>
             </div>
-            <!-- <component :is="dashboardComponent"></component> -->
         </div>
     </div>
 </template>
@@ -28,18 +27,17 @@
 <script>
 import UserProfile from "@/components/UserProfile.vue";
 import CreatorSearch from "@/components/CreatorSearch.vue";
+import QuestGrid from "@/components/QuestGrid.vue";
 import { mapState } from "vuex";
 
 export default {
     components: {
         CreatorSearch,
         UserProfile,
+        QuestGrid,
     },
     computed: {
         ...mapState(["loginType", "isLoggedIn"]),
-        // dashboardComponent() {
-        //     return this.loginType === "user" ? UserDashboard : CreatorDashboard;
-        // },
     },
     methods: {
         switchProfile() {
@@ -49,7 +47,7 @@ export default {
                 this.$store.dispatch("setLoginType", "user");
             }
         },
-    }
+    },
 };
 </script>
 
@@ -57,34 +55,41 @@ export default {
 html,
 body,
 #app {
-    height: 100%;
-    margin: 0;
+  height: 100%;
+  margin: 0;
+  width: 100%; /* Add width 100% */
 }
 
 .dynamic-dashboard {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%; /* Add width 100% */
 }
 
 .top-section {
-    display: flex;
-    flex-basis: 25%;
-    height: 25%;
+  display: flex;
+  flex-basis: 25%;
+  height: 25%;
+  width: 100%; /* Add width 100% */
 }
 
 .left-div {
-    flex-basis: 80%;
-    background-color: #e23a3a;
+  flex-basis: 80%;
+  background-color: #e23a3a;
+  width: 80%; /* Add width 80% */
 }
 
 .right-div {
-    flex-basis: 20%;
-    background-color: #66a648;
+  flex-basis: 20%;
+  background-color: #66a648;
+  width: 20%; /* Add width 20% */
 }
 
 .main-section {
-    flex-grow: 1;
-    background-color: #26316d;
+  flex-grow: 1;
+  background-color: #5e6fca;
+  width: 100%; /* Add width 100% */
 }
+
 </style>

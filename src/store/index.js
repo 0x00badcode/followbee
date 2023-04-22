@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { getUserInfo } from '@/api/apiFunctions';
+import { getUserInfo as fetchUserInfo } from '@/api/apiFunctions';
 
 export default createStore({
   state: {
@@ -40,8 +40,8 @@ export default createStore({
       localStorage.setItem('userProfile', profile);
       commit('SET_USER_PROFILE', profile);
     },
-    async fetchUserData({ commit }, token) {
-      const userData = await getUserInfo(token);
+    async fetchUserData({ commit }, userId, token) {
+      const userData = await fetchUserInfo(userId, token);
       commit('SET_USER_DATA', userData);
     },
     setUserId({ commit }, userId) {
@@ -49,6 +49,14 @@ export default createStore({
     },
     setLoginType({ commit }, loginType) {
       commit('SET_LOGIN_TYPE', loginType);
+    },
+    async getUserInfo({ commit }, { userId, token }) {
+      const userInfo = await fetchUserInfo(userId, token);
+      if (userInfo.success) {
+        commit('SET_USER_DATA', userInfo.data);
+        commit('SET_USER_ID', userInfo.data._id);
+        commit('SET_LOGIN_TYPE', userInfo.data.loginType);
+      }
     },
   },
   modules: {},

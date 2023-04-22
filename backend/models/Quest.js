@@ -7,7 +7,7 @@ const QuestSchema = new mongoose.Schema(
       ref: 'UserSchema',
       required: true,
     },
-    name: {
+    title: {
       type: String,
       required: true,
     },
@@ -19,14 +19,26 @@ const QuestSchema = new mongoose.Schema(
     },
     action: {
       type: String,
+      default: 'none',
     },
     creationDate: {
       type: Date,
       default: Date.now,
     },
+    type: {
+      type: String,
+      enum: ['goal', 'timer'],
+      required: true,
+    },
     objective: {
       type: Number,
       required: true,
+    },
+    endTime: {
+      type: Date,
+      required() {
+        return this.type === 'timer';
+      },
     },
     progress: {
       type: Number,

@@ -7,8 +7,7 @@
     <transition name="dropdown">
       <div class="dropdown-menu" v-if="showDropdown">
         <div class="user-details">
-          <p><strong>Email:</strong> {{ email }}</p>
-          <!-- Add more user details if needed -->
+          <p><strong>username:</strong> {{ username }}</p>
         </div>
         <button @click="$emit('switch-profile')" class="switch-mode-button">
           Switch to {{ loginType === 'creator' ? 'User' : 'Creator' }} Mode
@@ -36,28 +35,30 @@ export default {
     };
   },
   computed: {
-    ...mapState(['username', 'email', 'loginType']),
+    ...mapState(['username', 'email', 'loginType', 'userId']),
   },
   async mounted() {
-    await this.getUserInfo();
+  const userId = this.userId;
+  const token = localStorage.getItem('token');
+  await this.getUserInfo({ userId, token });
+},
+methods: {
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
   },
-  methods: {
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
-    },
-    logout() {
-      localStorage.removeItem('token');
-      this.$store.dispatch('setAuthStatus', false);
-      this.$router.push('/');
-      this.showDropdown = false;
-    },
-    changeLoginType() {
-      if (this.loginType === 'creator') {
-        this.setLoginType('user');
-      } else {
-        this.setLoginType('creator');
-      }
-    },
+  logout() {
+    localStorage.removeItem('token');
+    this.$store.dispatch('setAuthStatus', false);
+    this.$router.push('/');
+    this.showDropdown = false;
+  },
+  changeLoginType() {
+    if (this.loginType === 'creator') {
+      this.setLoginType('user');
+    } else {
+      this.setLoginType('creator');
+    }
+  },
     ...mapActions(['getUserInfo']),
     ...mapMutations(['setLoginType']),
   },

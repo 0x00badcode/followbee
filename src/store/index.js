@@ -7,7 +7,7 @@ export default createStore({
     userProfile: localStorage.getItem('userProfile') || '',
     userData: null,
     userId: null,
-    loginType: user
+    loginType: null,
   },
   mutations: {
     SET_AUTH_STATUS(state, status) {
@@ -24,7 +24,7 @@ export default createStore({
     },
     SET_LOGIN_TYPE(state, loginType) {
       state.loginType = loginType;
-    }
+    },
   },
   actions: {
     setAuthStatus({ commit }, status) {
@@ -47,8 +47,8 @@ export default createStore({
     setUserId({ commit }, userId) {
       commit('SET_USER_ID', userId);
     },
-    setLoginType({ commit }, state) {
-      commit('SET_USER_ID', state);
+    setLoginType({ commit }, loginType) {
+      commit('SET_LOGIN_TYPE', loginType);
     },
   },
   modules: {},

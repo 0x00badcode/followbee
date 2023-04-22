@@ -3,6 +3,7 @@ import Login from '@/components/auth/UserLogin.vue';
 import Landing from '@/views/LandingPage.vue';
 import UserDashboard from '@/views/UserDashboard.vue';
 import CreatorDashboard from '@/views/CreatorDashboard.vue';
+import DynamicDashboard from '@/views/DynamicDashboard.vue';
 import store from '@/store';
 
 const routes = [
@@ -22,21 +23,29 @@ const routes = [
     component: Login,
   },
   {
-    path: '/me',
+    path: '/user-dashboard',
     name: 'UserDashboard',
     component: UserDashboard,
-    meta : {
-      requiresAuth: true
-    }
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/creator-dashboard',
     name: 'CreatorDashboard',
     component: CreatorDashboard,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/me',
+    name: 'DynamicDashboard',
+    component: DynamicDashboard,
     meta : {
       requiresAuth: true
     }
-  }
+  },
 ];
 
 const router = createRouter({
@@ -47,10 +56,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isLoggedIn = store.getters.isLoggedIn;
   if (isLoggedIn && to.path === '/') {
-    next('/dashboard');
+    next('/me');
   } else {
     next();
   }
 });
+
 
 export default router;

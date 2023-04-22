@@ -36,6 +36,8 @@ router.delete('/:creatorId/unfollow', authenticate, unfollowCreator);
 router.get('/search', searchContentCreators);
 
 // Get quests and layout for a user
-router.get('/:username/layout', getUserQuestsAndLayout);
+router.get('user/:username/getLayout', getUserQuestsAndLayout);
+
+router.put('/user/:username/saveLayout', getUserQuestsAndLayout);
 
 module.exports = router;

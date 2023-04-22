@@ -135,7 +135,7 @@ export async function getQuestById(questId) {
 
 export async function getCreatorQuestsAndLayout(username) {
     try {
-        const response = await api.get(`/api/users/${username}/layout`);
+        const response = await api.get(`/api/users/${username}/getLayout`);
         return {
             success: true,
             data: response.data,
@@ -151,7 +151,7 @@ export async function getCreatorQuestsAndLayout(username) {
 
 export async function saveCreatorQuestsAndLayout(username, layout) {
     try {
-        const response = await api.put(`/api/users/${username}/layout`, { layout });
+        const response = await api.put(`/api/users/${username}/saveLayout`, { layout });
         return {
             success: true,
             data: response.data,

@@ -5,7 +5,7 @@ const { authenticate } = require('../middlewares/authenticate.js');
 const { getUserInfo } = require('../controllers/userControl');
 const { userSearch } = require('../controllers/userControl');
 
-router.get('/getUserInfo', authenticate, getUserInfo);
+router.get('/user', authenticate, getUserInfo);
 
 router.get('/search', userSearch);
 

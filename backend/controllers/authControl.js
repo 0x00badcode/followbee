@@ -58,8 +58,15 @@ exports.userLogin = async (req, res) => {
             expiresIn: '1h',
         });
 
-        res.status(200).json({ token: `Bearer ${token}`, isCreator: !!user.creatorInfo });
+        const userData = {
+            uid: user._id,
+            username: user.username,
+            email: user.email,
+        };
+
+        res.status(200).json({ token: `Bearer ${token}`, isCreator: !!user.creatorInfo, user: userData });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error'});
     }
 };
+

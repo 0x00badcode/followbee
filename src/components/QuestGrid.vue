@@ -46,7 +46,7 @@ export default {
         };
     },
     async mounted() {
-        const response = await getCreatorQuestsAndLayout(this.userProfile.username);
+        const response = await getCreatorQuestsAndLayout(this.username);
         if (response.success) {
             this.quests = response.data.quests;
             this.layout = response.data.layout;
@@ -61,6 +61,7 @@ export default {
             this.grid.disable();
         }
     },
+
     beforeUnmount() {
         if (this.isCreator) {
             this.grid.off("change", this.saveLayout);

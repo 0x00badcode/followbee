@@ -2,7 +2,8 @@ const User = require('../models/User');
 
 const getUserInfo = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).select('-password');
+        const userId = req.params.userId;
+        const user = await User.findById(userId).select('-password');
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }

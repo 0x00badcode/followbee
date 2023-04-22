@@ -2,7 +2,6 @@
   <div class="user-profile">
     <div class="user-info" @click="toggleDropdown">
       <img :src="profilePicture" alt="User Profile" class="profile-picture" />
-      <div class="username">{{ username }}</div>
     </div>
     <transition name="dropdown">
       <div class="dropdown-menu" v-if="showDropdown">
@@ -35,30 +34,30 @@ export default {
     };
   },
   computed: {
-    ...mapState(['username', 'email', 'loginType', 'userId']),
+    ...mapState(["userProfile", "loginType", "userId"]),
+    username() {
+      return this.$store.state.userData ? this.$store.state.userData.username : '';
+    },
   },
-  async mounted() {
-  const userId = this.userId;
-  const token = localStorage.getItem('token');
-  await this.getUserInfo({ userId, token });
-},
-methods: {
-  toggleDropdown() {
-    this.showDropdown = !this.showDropdown;
-  },
-  logout() {
-    localStorage.removeItem('token');
-    this.$store.dispatch('setAuthStatus', false);
-    this.$router.push('/');
-    this.showDropdown = false;
-  },
-  changeLoginType() {
-    if (this.loginType === 'creator') {
-      this.setLoginType('user');
-    } else {
-      this.setLoginType('creator');
-    }
-  },
+
+  methods: {
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.$store.dispatch('setAuthStatus', false);
+      this.$router.push('/');
+      this.showDropdown = false;
+      window.location.reload();
+    },
+    changeLoginType() {
+      if (this.loginType === 'creator') {
+        this.setLoginType('user');
+      } else {
+        this.setLoginType('creator');
+      }
+    },
     ...mapActions(['getUserInfo']),
     ...mapMutations(['setLoginType']),
   },

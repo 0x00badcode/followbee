@@ -165,6 +165,36 @@ const getUserQuestsAndLayout = async (req, res) => {
     }
 };
 
+const saveUserQuestsAndLayout = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const { layout } = req.body;
+
+        const user = await User.findOne({ username });
+
+        if (!user || !user.creatorInfo) {
+            return res.status(404).json({
+                success: false,
+                error: 'User not found or not a content creator',
+            });
+        }
+
+        user.creatorInfo.gridLayout = layout;
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'User quests and layout successfully saved',
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error',
+        });
+    }
+};
+
 module.exports = {
     getQuestsForCreator,
     createNewQuest,
@@ -174,4 +204,5 @@ module.exports = {
     unfollowCreator,
     searchContentCreators,
     getUserQuestsAndLayout,
+    saveUserQuestsAndLayout,
 };

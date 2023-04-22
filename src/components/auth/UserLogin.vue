@@ -25,7 +25,6 @@
 <script>
 import { login } from '@/api/apiFunctions';
 import { mapActions } from 'vuex';
-import { getUserInfo } from '@/api/apiFunctions';
 
 export default {
   data() {
@@ -46,18 +45,18 @@ export default {
       const response = await login(this.email, this.password);
 
       if (response.success) {
-        localStorage.setItem('token', response.data.token);
-        this.$store.dispatch('setAuthStatus', true);
-        this.$store.dispatch('setUserId', response.data.uid); // Store the user ID
-        this.$store.dispatch('setLoginType', 'user'); // Set login type to 'user'
-        this.$store.dispatch('setUserProfile', getUserInfo(response.data.uid, response.data.token));
-        this.$router.push('/me');
-        this.message = 'Login successful!';
+        localStorage.setItem("token", response.data.token);
+        this.$store.dispatch("setAuthStatus", true);
+        this.$store.dispatch("setUserId", response.data.user.uid);
+        this.$store.dispatch("setLoginType", "user");
+        this.$store.dispatch("setUserData", { user: response.data.user});
+        this.$router.push("/me");
+        this.message = "Login successful!";
       } else {
         this.message = response.error;
       }
     },
-    ...mapActions(['setAuthStatus', 'setUserId', 'setLoginType'])
+    ...mapActions(["setAuthStatus", "setUserId", "setLoginType", "fetchUserData"]),
   },
 };
 </script>

@@ -38,11 +38,14 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLoggedIn = store.getters.isLoggedIn;
-  if (isLoggedIn && to.path === '/') {
-    next('/me');
-  } else {
+  if (!isLoggedIn && to.path == '/me')
+    next('/');
+  else
     next();
-  }
+  if (isLoggedIn && to.path === '/')
+    next('/me');
+  else
+    next();
 });
 
 

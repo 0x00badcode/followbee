@@ -20,14 +20,17 @@ const getQuestsForCreator = async (req, res) => {
 
 const createNewQuest = async (req, res) => {
     try {
-        const { title, description, goal } = req.body;
+        const { title, description, action, type, startProgress, goal } = req.body;
         const creatorId = req.user.id;
 
         const newQuest = new Quest({
+            creator: creatorId,
             title,
             description,
+            action,
+            type,
+            startProgress,
             goal,
-            creator: creatorId,
         });
 
         await newQuest.save();

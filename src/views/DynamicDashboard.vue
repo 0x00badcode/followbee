@@ -28,7 +28,7 @@
 import UserProfile from "@/components/UserProfile.vue";
 import CreatorSearch from "@/components/CreatorSearch.vue";
 import QuestGrid from "@/components/QuestGrid.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
     components: {
@@ -37,7 +37,8 @@ export default {
         QuestGrid,
     },
     computed: {
-        ...mapState(["loginType", "isLoggedIn"]),
+        ...mapState(["loginType"]),
+        ...mapGetters(["isLoggedIn"]),
     },
     methods: {
         switchProfile() {

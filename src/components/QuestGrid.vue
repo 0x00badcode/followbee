@@ -22,8 +22,12 @@ import { GridStack } from "gridstack";
 import "gridstack/dist/gridstack.min.css";
 import QuestBox from "@/components/QuestBox.vue";
 import QuestForm from "@/components/QuestForm.vue";
+import { mapGetters } from "vuex";
 
 export default {
+    computed: {
+        ...mapGetters(["username"]),
+    },
     components: {
         QuestBox,
         QuestForm,
@@ -46,6 +50,7 @@ export default {
         };
     },
     async mounted() {
+        console.log(this.$store.state.userData.username);
         const response = await getCreatorQuestsAndLayout(this.username);
         if (response.success) {
             this.quests = response.data.quests;

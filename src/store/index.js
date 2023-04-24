@@ -2,14 +2,16 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    isLoggedIn: !!localStorage.getItem('token'),
-    userProfile: localStorage.getItem('userProfile') || '',
-    userData: null,
+    token: localStorage.getItem('token') || null,
+    userProfile: JSON.parse(localStorage.getItem('userProfile') || '{}'),
+    userData: {},
     userId: null,
     loginType: null,
-    username: null,
   },
   mutations: {
+    SET_TOKEN(state, token) {
+      state.token = token;
+    },
     SET_AUTH_STATUS(state, status) {
       state.isLoggedIn = status;
     },
@@ -25,19 +27,17 @@ export default createStore({
     SET_LOGIN_TYPE(state, loginType) {
       state.loginType = loginType;
     },
-    SET_USERNAME(state, username) {
-      state.username = username;
-    },
   },
   actions: {
-    setAuthStatus({ commit }, status) {
-      if (status) {
-        localStorage.setItem('token', 'loggedIn');
+    setAuthStatus({ commit }, token) {
+      if (token) {
+        localStorage.setItem('token', token);
+        commit('SET_TOKEN', token);
       } else {
         localStorage.removeItem('token');
         localStorage.removeItem('userProfile');
+        commit('SET_TOKEN', null);
       }
-      commit('SET_AUTH_STATUS', status);
     },
     setUserProfile({ commit }, profile) {
       localStorage.setItem('userProfile', profile);
@@ -52,6 +52,14 @@ export default createStore({
     setUserData({ commit }, { user }) {
         commit("SET_USER_DATA", user);
     },
+  },
+  getters: {
+    isLoggedIn: (state) => !!state.token,
+    userProfile: (state) => state.userProfile,
+    userData: (state) => state.userData,
+    userId: (state) => state.userId,
+    loginType: (state) => state.loginType,
+    username: (state) => state.userData.username,
   },
   modules: {},
 });

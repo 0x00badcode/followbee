@@ -73,13 +73,15 @@ export async function getQuest(questId) {
     }
 }
 
-export async function createQuest(title, description, type, objective, endTime, creatorId) {
+export async function createQuest(creatorId, title, description, action, type, startProgress, objective, endTime) {
     try {
         const requestData = {
             creatorId,
             title,
             description,
+            action,
             type,
+            startProgress,
             objective,
         };
 
@@ -93,7 +95,6 @@ export async function createQuest(title, description, type, objective, endTime, 
         return { success: false, error: error.response.data.error || 'Internal server error' };
     }
 }
-
 
 export async function updateQuest(questId, title, description, goal, progress, creatorId) {
     try {
@@ -165,6 +166,7 @@ export async function saveCreatorQuestsAndLayout(username, layout) {
     }
 }
 
+//TODO: function to update the progress of a quest
 
 
 // -------------------------------------------- //

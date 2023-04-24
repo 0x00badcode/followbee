@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -35,9 +35,7 @@ export default {
   },
   computed: {
     ...mapState(["userProfile", "loginType", "userId"]),
-    username() {
-      return this.$store.state.userData ? this.$store.state.userData.username : '';
-    },
+    ...mapGetters(["username"])
   },
 
   methods: {

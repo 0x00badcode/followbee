@@ -30,6 +30,10 @@ const QuestSchema = new mongoose.Schema(
       enum: ['goal', 'timer'],
       required: true,
     },
+    startProgress: {
+      type: Number,
+      required: true,
+    },
     objective: {
       type: Number,
       required: true,

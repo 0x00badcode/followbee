@@ -17,11 +17,14 @@
           <option value="timer">Timer</option>
         </select>
         <br />
+        <label for="startProgress">Current:</label>
+        <input type="number" id="startProgress" v-model="form.startProgress" required />
+        <br />
         <label for="objective">Objective:</label>
         <input type="number" id="objective" v-model="form.objective" required />
         <br />
         <div v-if="form.type === 'timer'">
-          <label for="duration">Duration (seconds):</label>
+          <label for="duration">Duration (hours):</label>
           <input type="number" id="duration" v-model="form.duration" required />
           <br />
         </div>
@@ -61,7 +64,9 @@ export default {
       form: {
         title: "",
         description: "",
+        // image: "",
         type: "goal",
+        startProgress: 0,
         objective: 0,
         duration: 0,
       },
@@ -74,12 +79,15 @@ export default {
       const endTime = this.form.type === "timer" ? new Date(Date.now() + this.form.duration * 1000) : null;
 
       const response = await createQuest(
+        creatorId,
         this.form.title,
         this.form.description,
+        // this.form.image,
+        this.form.action,
         this.form.type,
+        this.form.startProgress, //TODO: update further on so it doest things automatically for this field
         this.form.objective,
         endTime,
-        creatorId
       );
 
       if (response.success) {

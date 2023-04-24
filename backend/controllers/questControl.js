@@ -172,7 +172,7 @@ const saveUserQuestsAndLayout = async (req, res) => {
 
         const user = await User.findOne({ username });
 
-        if (!user || !user.creatorInfo) {
+        if (!user || !user.creatorInfo) { //TODO : we'll have to find a way for this to be false when the user is not a creator but saves his layout for the first time, maybe by adding a quest that says "setup my account" with an objective or idk
             return res.status(404).json({
                 success: false,
                 error: 'User not found or not a content creator',

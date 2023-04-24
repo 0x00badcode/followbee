@@ -25,6 +25,7 @@
 <script>
 import { login } from '@/api/apiFunctions';
 import { mapActions } from 'vuex';
+import Cookies from 'js-cookie';
 
 export default {
   data() {
@@ -42,24 +43,39 @@ export default {
   },
   methods: {
     async loginHandler() {
-      const response = await login(this.email, this.password);
+  const response = await login(this.email, this.password);
+  console.log(response);
+  if (response.success) {
+    console.log(response.data.token);
+    Cookies.set('token', response.data.token, { expires: 7 }); // Expires in 7 days
+    this.$store.dispatch("setAuthStatus", response.data.token);
+    this.$store.dispatch("setUserId", response.data.user.uid);
+    this.$store.dispatch("setLoginType", "user");
+    this.$store.dispatch("setUserData", { user: response.data.user });
+    this.$router.push("/me");
+    this.message = "Login successful!";
+  } else {
+    this.message = response.error;
+  }
+},
 
-      if (response.success) {
-        localStorage.setItem("token", response.data.token);
-        this.$store.dispatch("setAuthStatus", true);
-        this.$store.dispatch("setUserId", response.data.user.uid);
-        this.$store.dispatch("setLoginType", "user");
-        this.$store.dispatch("setUserData", { user: response.data.user});
-        this.$router.push("/me");
-        this.message = "Login successful!";
-      } else {
-        this.message = response.error;
-      }
-    },
+
     ...mapActions(["setAuthStatus", "setUserId", "setLoginType", "fetchUserData"]),
   },
 };
 </script>
+
+async loginHandler() {
+  const response = await login(this.email, this.password);
+  console.log(response);
+  if (response.success) {
+    console.log(response.data.token);
+    this.$store.dispatch("setAuthStatus", response.data.token);
+    // ...
+  } else {
+    this.message = response.error;
+  }
+},
 
 
 <style scoped>

@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const authenticate = (req, res, next) => {
   const authHeader = req.header('Authorization');
 
@@ -11,15 +13,16 @@ const authenticate = (req, res, next) => {
     return res.status(401).json({ error: 'Invalid token format' });
   }
 
-  const token = tokenParts[1]; // Keep this definition of the token variable
+  const token = tokenParts[1].trim();
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
+    console.log('Token verification error:', error);
     res.status(400).json({ error: 'Invalid token' });
   }
 };
 
-module.exports = { authenticate }
+module.exports = { authenticate };

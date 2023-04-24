@@ -6,7 +6,7 @@
             </div>
             <div class="right-div">
                 <div v-if="isLoggedIn">
-                    <user-profile :username="username" :email="email" :profile-picture="profilePicture"
+                    <user-profile v-if="userData" :username="username" :email="email" :profile-picture="profilePicture"
                         @switch-profile="switchProfile"></user-profile>
                 </div>
             </div>
@@ -18,7 +18,7 @@
             </div>
             <div v-else>
                 Creator
-                <quest-grid :username="username" :is-creator="loginType === 'creator'"></quest-grid>
+                <quest-grid :is-creator="loginType === 'creator'"></quest-grid>
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@ export default {
     },
     computed: {
         ...mapState(["loginType"]),
-        ...mapGetters(["isLoggedIn"]),
+        ...mapGetters(["isLoggedIn", "userData",]),
     },
     methods: {
         switchProfile() {
@@ -56,41 +56,46 @@ export default {
 html,
 body,
 #app {
-  height: 100%;
-  margin: 0;
-  width: 100%; /* Add width 100% */
+    height: 100%;
+    margin: 0;
+    width: 100%;
+    /* Add width 100% */
 }
 
 .dynamic-dashboard {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%; /* Add width 100% */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    /* Add width 100% */
 }
 
 .top-section {
-  display: flex;
-  flex-basis: 25%;
-  height: 25%;
-  width: 100%; /* Add width 100% */
+    display: flex;
+    flex-basis: 25%;
+    height: 25%;
+    width: 100%;
+    /* Add width 100% */
 }
 
 .left-div {
-  flex-basis: 80%;
-  background-color: #e23a3a;
-  width: 80%; /* Add width 80% */
+    flex-basis: 80%;
+    background-color: #e23a3a;
+    width: 80%;
+    /* Add width 80% */
 }
 
 .right-div {
-  flex-basis: 20%;
-  background-color: #66a648;
-  width: 20%; /* Add width 20% */
+    flex-basis: 20%;
+    background-color: #66a648;
+    width: 20%;
+    /* Add width 20% */
 }
 
 .main-section {
-  flex-grow: 1;
-  background-color: #5e6fca;
-  width: 100%; /* Add width 100% */
+    flex-grow: 1;
+    background-color: #5e6fca;
+    width: 100%;
+    /* Add width 100% */
 }
-
 </style>

@@ -2,8 +2,10 @@
     <div ref="gridContainer" class="grid-stack">
         <div v-for="(layoutItem, index) in layout" :key="index" class="grid-stack-item" :gs-x="layoutItem.x"
             :gs-y="layoutItem.y" :gs-width="layoutItem.gridWidth" :gs-height="layoutItem.gridHeight">
-            <QuestBox :quest="getQuestById(layoutItem.questId)" :gridWidth="layoutItem.gridWidth"
-                :gridHeight="layoutItem.gridHeight"></QuestBox>
+            <QuestBox :quest="getQuestById(layoutItem.questId)" :containerStyle="{
+                    width: '100%',
+                    height: '100%',
+                }"></QuestBox>
         </div>
         <!-- Empty state content -->
         <div v-if="quests.length === 0" class="empty-state">
@@ -16,7 +18,7 @@
 <script>
 import {
     getCreatorQuestsAndLayout,
-    saveCreatorQuestAndLayout,
+    saveCreatorQuestsAndLayout,
 } from "@/api/apiFunctions";
 import { GridStack } from "gridstack";
 import "gridstack/dist/gridstack.min.css";
@@ -26,17 +28,13 @@ import { mapGetters } from "vuex";
 
 export default {
     computed: {
-        ...mapGetters(["username"]),
+        ...mapGetters(["userData"]),
     },
     components: {
         QuestBox,
         QuestForm,
     },
     props: {
-        username: {
-            type: String,
-            required: true,
-        },
         isCreator: {
             type: Boolean,
             default: false,
@@ -50,22 +48,38 @@ export default {
         };
     },
     async mounted() {
-        console.log(this.$store.state.userData.username);
-        const response = await getCreatorQuestsAndLayout(this.username);
+        const response = await getCreatorQuestsAndLayout(this.userData.username);
+        // check if response is 404
+        if (response.error) {
+            console.error(response.error);
+        }
         if (response.success) {
             this.quests = response.data.quests;
             this.layout = response.data.layout;
         }
 
-        this.grid = GridStack.init({ column: 12, float: true }, this.$refs.gridContainer);
+        this.grid = GridStack.init(
+            {
+                column: 12,
+                float: true,
+                resizable: {
+                    handles: 'e, se, s, sw, w', // You can change the handles to control which edges allow resizing
+                },
+                draggable: {
+                    handle: '.quest-box-header', // You can change the handle to control which area can be used to drag the quest box
+                },
+            },
+            this.$refs.gridContainer
+        );
 
         if (this.isCreator) {
             this.grid.enable();
-            this.grid.on("change", this.saveLayout);
+            this.grid.on('change', this.saveLayout);
         } else {
             this.grid.disable();
         }
     },
+
 
     beforeUnmount() {
         if (this.isCreator) {
@@ -80,11 +94,13 @@ export default {
         async saveLayout() {
             if (!this.isCreator) return;
             const serializedData = this.grid.save(false);
-            const response = await saveCreatorQuestAndLayout(this.username, serializedData);
+            this.layout = serializedData; // Update the layout with the latest grid state
+            const response = await saveCreatorQuestsAndLayout(this.userData.username, serializedData);
             if (!response.success) {
                 console.error(response.error);
             }
         },
+
         createQuest(newQuest) {
             this.quests.push(newQuest);
             this.layout.push({
@@ -96,43 +112,20 @@ export default {
             });
 
             this.$nextTick(() => {
-                this.grid.addWidget(
-                    {
-                        x: 0,
-                        y: 0,
-                        width: 4,
-                        height: 4,
-                        content: `
-          <quest-box
-            :quest="getQuestById('${newQuest._id}')
-            :gridWidth="4"
-            :gridHeight="4"
-          ></quest-box>`,
-                    },
-                    this.$refs.gridContainer
-                );
+                this.grid.engine.updateNode(this.layout[this.layout.length - 1]);
+                this.grid.engine.float = true;
 
-                // Add the QuestForm widget to the grid
-                this.grid.addWidget(
-                    {
-                        x: this.grid.getGridWidth() - 4,
-                        y: this.grid.getGridHeight(),
-                        width: 4,
-                        height: 4,
-                        content: `
-          <quest-form
-            :x="${this.grid.getGridWidth() - 4}"
-            :y="${this.grid.getGridHeight()}"
-            :width="4"
-            :height="4"
-            @created="createQuest"
-          ></quest-form>`,
-                    },
-                    this.$refs.gridContainer
-                );
+                if (this.isCreator) {
+                    this.grid.enable();
+                    this.grid.on("change", this.saveLayout);
+                } else {
+                    this.grid.disable();
+                }
+
                 this.saveLayout();
             });
         },
+
 
     },
 };

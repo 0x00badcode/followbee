@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import api from '../api/api';
 
 export default createStore({
   state: {
@@ -51,6 +52,15 @@ export default createStore({
     },
     setUserData({ commit }, { user }) {
         commit("SET_USER_DATA", user);
+    },
+    async fetchUserData({ commit }, userId) {
+      try {
+        const response = await api.get(`/user/${userId}`);
+        const userData = response.data;
+        commit("SET_USER_DATA", userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     },
   },
   getters: {

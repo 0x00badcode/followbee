@@ -7,7 +7,8 @@ const app = createApp(App);
 
 // Check for token in localStorage and update Vuex store
 if (localStorage.getItem('token')) {
-  store.dispatch('setAuthStatus', true);
+  store.dispatch('setAuthStatus', localStorage.getItem('token'));
+  store.dispatch('fetchUserData'); // Add this line
 }
 
 app.use(router);

@@ -24,7 +24,7 @@
 
 <script>
 import { login } from '@/api/apiFunctions';
-import { mapActions } from 'vuex';
+import { useUserStore } from '@/store/userStore';
 
 export default {
   data() {
@@ -44,17 +44,17 @@ export default {
     async loginHandler() {
       const response = await login(this.email, this.password);
       if (response.success) {
-        this.$store.dispatch("setAuthStatus", response.data.token);
-        this.$store.dispatch("setUserId", response.data.user.uid);
-        this.$store.dispatch("setLoginType", "user");
-        this.$store.dispatch("setUserData", { user: response.data.user });
+        const userStore = useUserStore();
+        userStore.setAuthStatus(response.data.token);
+        userStore.setUserId(response.data.user.uid);
+        userStore.setLoginType("user");
+        userStore.setUserData(response.data.user);
         this.$router.push("/me");
         this.message = "Login successful!";
       } else {
         this.message = response.error;
       }
     },
-    ...mapActions(["setAuthStatus", "setUserId", "setLoginType", "fetchUserData"]),
   },
 };
 </script>

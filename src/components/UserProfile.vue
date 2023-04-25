@@ -8,7 +8,7 @@
         <div class="user-details">
           <p><strong>username:</strong> {{ username }}</p>
         </div>
-        <button @click="$emit('switch-profile')" class="switch-mode-button">
+        <button @click="switchProfile" class="switch-mode-button">
           Switch to {{ loginType === 'creator' ? 'User' : 'Creator' }} Mode
         </button>
 
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
+import { useUserStore } from '@/store/userStore';
 
 export default {
   props: {
@@ -28,42 +28,53 @@ export default {
       default: "https://via.placeholder.com/50",
     },
   },
-  data() {
+  setup() {
+    const userStore = useUserStore();
+
+    function toggleDropdown() {
+      userStore.showDropdown = !userStore.showDropdown;
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      userStore.setAuthStatus(false);
+      userStore.$router.push('/');
+      userStore.showDropdown = false;
+      window.location.reload();
+    }
+
+    function switchProfile() {
+      userStore.setLoginType(userStore.loginType === 'creator' ? 'user' : 'creator');
+    }
+
     return {
-      showDropdown: false,
+      userStore,
+      toggleDropdown,
+      logout,
+      switchProfile,
     };
   },
   computed: {
-    ...mapState(["userProfile", "loginType", "userId"]),
-    ...mapGetters(["username"])
-  },
-
-  methods: {
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
+    showDropdown() {
+      return this.userStore.showDropdown;
     },
-    logout() {
-      localStorage.removeItem('token');
-      this.$store.dispatch('setAuthStatus', false);
-      this.$router.push('/');
-      this.showDropdown = false;
-      window.location.reload();
+    userProfile() {
+      return this.userStore.userProfile;
     },
-    changeLoginType() {
-      if (this.loginType === 'creator') {
-        this.setLoginType('user');
-      } else {
-        this.setLoginType('creator');
-      }
+    loginType() {
+      return this.userStore.loginType;
     },
-    ...mapActions(['getUserInfo']),
-    ...mapMutations(['setLoginType']),
+    userId() {
+      return this.userStore.userId;
+    },
+    username() {
+      return this.userStore.username;
+    },
   },
 };
 </script>
 
 <style scoped>
-/* Add your styles */
 .switch-mode-button {
   display: block;
   background-color: #aaa;

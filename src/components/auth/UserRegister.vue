@@ -37,7 +37,13 @@ export default {
             password: '',
             isCreator: false,
             message: '',
+            showPassword: false,
         };
+    },
+    computed: {
+        passwordInputType() {
+            return this.showPassword ? 'text' : 'password';
+        },
     },
     methods: {
         async registerHandler() {

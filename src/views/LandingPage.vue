@@ -3,12 +3,7 @@
     <header>
       <nav>
         <div class="search-container">
-          <input
-            type="text"
-            v-model="searchQuery"
-            @input="search"
-            placeholder="Search Content Creators"
-          />
+          <input type="text" v-model="searchQuery" @input="search" placeholder="Search Content Creators" />
           <div v-for="creator in contentCreators" :key="creator._id">
             <router-link :to="`/quests/${creator._id}`">{{ creator.username }}</router-link>
           </div>
@@ -41,13 +36,11 @@
   </div>
 </template>
 
-
-
 <script>
-import { mapState } from 'vuex';
 import UserRegister from '../components/auth/UserRegister.vue';
 import CreatorRegister from '../components/auth/CreatorRegister.vue';
 import { searchContentCreators } from '@/api/apiFunctions';
+import { useUserStore } from '@/store/userStore';
 
 export default {
   name: 'LandingPage',
@@ -55,8 +48,24 @@ export default {
     UserRegister,
     CreatorRegister,
   },
+  setup() {
+    const userStore = useUserStore();
+
+    function logout() {
+      localStorage.removeItem('token');
+      userStore.setAuthStatus(false);
+      this.$router.push('/login');
+    }
+
+    return {
+      userStore,
+      logout,
+    };
+  },
   computed: {
-    ...mapState(['isLoggedIn']),
+    isLoggedIn() {
+      return this.userStore.isLoggedIn;
+    },
   },
   data() {
     return {
@@ -79,11 +88,6 @@ export default {
       this.showPopup = false;
       this.popupComponent = null;
     },
-    logout() {
-      localStorage.removeItem('token');
-      this.$store.dispatch('setAuthStatus', false);
-      this.$router.push('/login');
-    },
     async search() {
       const response = await searchContentCreators(this.searchQuery);
       if (response.success) {
@@ -95,7 +99,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .landing {
@@ -185,5 +188,4 @@ header nav a {
 header nav a:hover {
   color: #3498db;
 }
-
 </style>

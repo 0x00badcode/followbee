@@ -7,7 +7,6 @@
                     height: '100%',
                 }"></QuestBox>
         </div>
-        <!-- Empty state content -->
         <div v-if="quests.length === 0" class="empty-state">
             <p>No quests available. Click the "+" button to add a new quest.</p>
         </div>
@@ -24,12 +23,9 @@ import { GridStack } from "gridstack";
 import "gridstack/dist/gridstack.min.css";
 import QuestBox from "@/components/QuestBox.vue";
 import QuestForm from "@/components/QuestForm.vue";
-import { mapGetters } from "vuex";
+import { useUserStore } from '@/store/userStore';
 
 export default {
-    computed: {
-        ...mapGetters(["userData"]),
-    },
     components: {
         QuestBox,
         QuestForm,
@@ -38,6 +34,18 @@ export default {
         isCreator: {
             type: Boolean,
             default: false,
+        },
+    },
+    setup() {
+        const userStore = useUserStore();
+
+        return {
+            userStore,
+        };
+    },
+    computed: {
+        userData() {
+            return this.userStore.userData;
         },
     },
     data() {
@@ -49,9 +57,8 @@ export default {
     },
     async mounted() {
         const response = await getCreatorQuestsAndLayout(this.userData.username);
-        // check if response is 404
         if (response.error) {
-            console.error(response.error);
+            console.log("User is not a creator yet, or quests cannot be found.");
         }
         if (response.success) {
             this.quests = response.data.quests;
@@ -94,7 +101,7 @@ export default {
         async saveLayout() {
             if (!this.isCreator) return;
             const serializedData = this.grid.save(false);
-            this.layout = serializedData; // Update the layout with the latest grid state
+            this.layout = serializedData;
             const response = await saveCreatorQuestsAndLayout(this.userData.username, serializedData);
             if (!response.success) {
                 console.error(response.error);
@@ -110,7 +117,6 @@ export default {
                 width: 4,
                 height: 4,
             });
-
             this.$nextTick(() => {
                 this.grid.engine.updateNode(this.layout[this.layout.length - 1]);
                 this.grid.engine.float = true;
@@ -125,10 +131,9 @@ export default {
                 this.saveLayout();
             });
         },
-
-
     },
 };
+
 </script>
 
 <style scoped>

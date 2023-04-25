@@ -28,7 +28,7 @@
 import UserProfile from "@/components/UserProfile.vue";
 import CreatorSearch from "@/components/CreatorSearch.vue";
 import QuestGrid from "@/components/QuestGrid.vue";
-import { mapState, mapGetters } from "vuex";
+import { useUserStore } from '@/store/userStore';
 
 export default {
     components: {
@@ -36,17 +36,40 @@ export default {
         UserProfile,
         QuestGrid,
     },
-    computed: {
-        ...mapState(["loginType"]),
-        ...mapGetters(["isLoggedIn", "userData",]),
-    },
-    methods: {
-        switchProfile() {
-            if (this.loginType === "user") {
-                this.$store.dispatch("setLoginType", "creator");
+    setup() {
+        const userStore = useUserStore();
+
+        function switchProfile() {
+            if (userStore.loginType === "user") {
+                userStore.setLoginType("creator");
             } else {
-                this.$store.dispatch("setLoginType", "user");
+                userStore.setLoginType("user");
             }
+        }
+
+        return {
+            userStore,
+            switchProfile,
+        };
+    },
+    computed: {
+        isLoggedIn() {
+            return this.userStore.isLoggedIn;
+        },
+        userData() {
+            return this.userStore.userData;
+        },
+        loginType() {
+            return this.userStore.loginType;
+        },
+        username() {
+            return this.userStore.username;
+        },
+        email() {
+            return this.userStore.email;
+        },
+        profilePicture() {
+            return this.userStore.profilePicture;
         },
     },
 };

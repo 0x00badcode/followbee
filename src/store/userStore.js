@@ -1,4 +1,3 @@
-// userStore.js
 import { defineStore } from 'pinia';
 import api from '../api/api';
 
@@ -8,7 +7,7 @@ export const useUserStore = defineStore({
     token: localStorage.getItem('token') || null,
     userProfile: JSON.parse(localStorage.getItem('userProfile') || '{}'),
     userData: {},
-    userId: null,
+    userId: localStorage.getItem('userId') || null,
     loginType: null,
   }),
   getters: {
@@ -35,6 +34,7 @@ export const useUserStore = defineStore({
       this.userProfile = profile;
     },
     setUserId(userId) {
+      localStorage.setItem('userId', userId);
       this.userId = userId;
     },
     setLoginType(loginType) {
